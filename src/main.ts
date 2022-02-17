@@ -4,10 +4,12 @@ import App from './App.vue'
 import router, { setupRouter } from './router'
 import ElementPuls from 'element-plus'
 import "element-plus/dist/index.css";
+import vant from 'vant';
+import 'vant/lib/index.css';
 const app = createApp(App)
 setupStore(app) // 引入状态管理
 setupRouter(app)
 
 router.isReady().then(() => {
-	app.use(ElementPuls).mount('#app')
+	app.use(ElementPuls).use(vant).mount('#app')
 })

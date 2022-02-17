@@ -4,6 +4,7 @@ import path from 'path'
 import {
 	createStyleImportPlugin,
 	ElementPlusResolve,
+	// VantResolve,
   } from 'vite-plugin-style-import'
 const resolve = (dir: string) => path.join(__dirname, dir)
 
@@ -13,6 +14,7 @@ export default defineConfig({
 	createStyleImportPlugin({
         resolves: [
           ElementPlusResolve(),
+		//   VantResolve(),
         ],
         libs: [
 		  {

@@ -1,7 +1,5 @@
 <template>
-	<svg :class="svgClass" aria-hidden="true" v-on="$attrs">
-		<use :xlink:href="iconName" />
-	</svg>
+	<h1>111111</h1>
 </template>
 
 <script lang="ts">
