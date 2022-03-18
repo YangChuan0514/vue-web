@@ -19,6 +19,14 @@
   resolved "https://registry.npmmirror.com/@babel/parser/-/parser-7.17.0.tgz"
   integrity sha512-VKXSCQx5D8S04ej+Dqsr1CzYvvWgf20jIw2D+YhQCrIlr2UZGaDds23Y0xg75/skOxpLCRpUZvk/1EAVkGoDOw==
 
+"@babel/runtime-corejs2@^7.10.2":
+  version "7.17.2"
+  resolved "https://registry.npmmirror.com/@babel/runtime-corejs2/-/runtime-corejs2-7.17.2.tgz"
+  integrity sha512-EamjJvKlHTdSmJ8t6yHtqttdiA3xThvTNdmGb0Kh0oqRhV1SU2JGFU5TjVCg35Vnn8MYfUBHHtLZYHIY+W28qw==
+  dependencies:
+    core-js "^2.6.5"
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@^7.0.0":
   version "7.17.2"
   resolved "https://registry.npmmirror.com/@babel/runtime/-/runtime-7.17.2.tgz"
@@ -81,21 +89,26 @@
   resolved "https://registry.npmmirror.com/@types/node/-/node-17.0.18.tgz"
   integrity sha512-eKj4f/BsN/qcculZiRSujogjvp5O/k4lOW5m35NopjZM/QwLOR075a8pJW5hD+Rtdm2DaCVPENS6KtSQnUD6BA==
 
+"@vant/area-data@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npmmirror.com/@vant/area-data/-/area-data-1.2.2.tgz#1b0559ee93661663d10d3766bcde15ab35ff3fcd"
+  integrity sha512-efv7Yl/OTHjyy0irhJJPtgZb5mJZmroEtVOa8vkGRNTLY93+NgEcVuIBaC35hYCMsTrPHDQRvQGnI9Hyhtto0Q==
+
 "@vant/icons@^1.7.1":
   version "1.7.3"
-  resolved "https://registry.npmmirror.com/@vant/icons/-/icons-1.7.3.tgz#e51b46065cfde445617401ebe309a33b62a29725"
+  resolved "https://registry.npmmirror.com/@vant/icons/-/icons-1.7.3.tgz"
   integrity sha512-tW4EqzxN4kXw1rnlnQJQHofEifPbt/gECOWiibomht8QLyvoGuE4iUmDFS288dJ07ZjuTy0bhdABj0SENo2fmQ==
 
 "@vant/popperjs@^1.1.0":
   version "1.1.0"
-  resolved "https://registry.npmmirror.com/@vant/popperjs/-/popperjs-1.1.0.tgz#b4edee5bbfa6fb18705986e313d4fd5f17942a0f"
+  resolved "https://registry.npmmirror.com/@vant/popperjs/-/popperjs-1.1.0.tgz"
   integrity sha512-8MD1gz146awV/uPxYjz4pet22f7a9YVKqk7T+gFkWFwT9mEcrIUEg/xPrdOnWKLP9puXyYtm7oVfSDSefZ/p/w==
   dependencies:
     "@popperjs/core" "^2.9.2"
 
 "@vant/use@^1.3.5":
   version "1.3.5"
-  resolved "https://registry.npmmirror.com/@vant/use/-/use-1.3.5.tgz#fd2817850e76e3098e29d4c8d864e19207c03ab1"
+  resolved "https://registry.npmmirror.com/@vant/use/-/use-1.3.5.tgz"
   integrity sha512-S4rfMQT+71quUbSY9sF7vJTEADVWqHxn8zUbpEl4vzI2CCJx67ri/ZHV911LpXIaZVgSSGPLE5xLV8javmbU0Q==
 
 "@vitejs/plugin-vue@^2.0.0":
@@ -433,6 +446,11 @@ constantinople@^4.0.1:
   dependencies:
     "@babel/parser" "^7.6.0"
     "@babel/types" "^7.6.1"
+
+core-js@^2.6.5:
+  version "2.6.12"
+  resolved "https://registry.npmmirror.com/core-js/-/core-js-2.6.12.tgz"
+  integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
 csstype@^2.6.8:
   version "2.6.19"
@@ -1072,6 +1090,20 @@ pug@^3.0.2:
     pug-runtime "^3.0.1"
     pug-strip-comments "^2.0.0"
 
+qiniu-js@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.npmmirror.com/qiniu-js/-/qiniu-js-3.4.0.tgz"
+  integrity sha512-QJ5ShXQkyPuhMXEruyLza3V++8crvDNLTFOXzuMXrnXCvwtEbP+MZyYo4D96HRXnSFb6lAJ9s2QdzW1W3LBiIQ==
+  dependencies:
+    "@babel/runtime-corejs2" "^7.10.2"
+    querystring "^0.2.1"
+    spark-md5 "^3.0.0"
+
+querystring@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.npmmirror.com/querystring/-/querystring-0.2.1.tgz"
+  integrity sha512-wkvS7mL/JMugcup3/rMitHmd9ecIGd2lhFhK9N3UUQ450h66d1r3Y9nvXzQAW1Lq+wyx61k/1pfKS5KuKiyEbg==
+
 readdirp@~3.6.0:
   version "3.6.0"
   resolved "https://registry.npmmirror.com/readdirp/-/readdirp-3.6.0.tgz"
@@ -1161,6 +1193,11 @@ sourcemap-codec@^1.4.4:
   resolved "https://registry.npmmirror.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz"
   integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
 
+spark-md5@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.npmmirror.com/spark-md5/-/spark-md5-3.0.2.tgz"
+  integrity sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==
+
 supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
@@ -1219,7 +1256,7 @@ upper-case@^2.0.2:
 
 vant@^3.4.5:
   version "3.4.5"
-  resolved "https://registry.npmmirror.com/vant/-/vant-3.4.5.tgz#2934f6623d3705120607eb777ae4151ef192befe"
+  resolved "https://registry.npmmirror.com/vant/-/vant-3.4.5.tgz"
   integrity sha512-3an2v6ejW9pijKmaDbSCW7Hs1R45tqtTIcedfI8hEAA5zC2Bp8cXU6Z4gUCK6/RAGOJsB+vcyLINLb1cGS/SzQ==
   dependencies:
     "@vant/icons" "^1.7.1"
@@ -1228,7 +1265,7 @@ vant@^3.4.5:
 
 vite-plugin-style-import@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.npmmirror.com/vite-plugin-style-import/-/vite-plugin-style-import-2.0.0.tgz#edafd9fbb09e8bb5ae67dee8f601afbe386a9969"
+  resolved "https://registry.npmmirror.com/vite-plugin-style-import/-/vite-plugin-style-import-2.0.0.tgz"
   integrity sha512-qtoHQae5dSUQPo/rYz/8p190VU5y19rtBaeV7ryLa/AYAU/e9CG89NrN/3+k7MR8mJy/GPIu91iJ3zk9foUOSA==
   dependencies:
     "@rollup/pluginutils" "^4.1.2"

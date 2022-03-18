@@ -83,6 +83,9 @@ const onRegister = async () => {
     register.password = "";
     register.repetitionPassword = "";
     Notify({ type: "success", message: "注册成功，可以前往登录" });
+    router.push({
+      name: "login",
+    });
   } else {
     Notify({ type: "warning", message: res?.data?.data });
     return;

@@ -47,11 +47,13 @@ import { reactive, ref } from "vue";
 import { LoginType } from "../../type/user";
 import { loginService } from "../../services/user";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { checkoutRules } from "./checkout";
 import { Notify } from "vant";
 const accountNumberRules = () => checkoutRules(login.accountNumber);
 const passwordRules = () => checkoutRules(login.password);
 const router = useRouter();
+const store = useStore();
 const login: LoginType = reactive({
   accountNumber: "",
   password: "",
@@ -62,10 +64,22 @@ const onLogin = async () => {
     login.accountNumber = "";
     login.password = "";
     Notify({ type: "success", message: "登录成功" });
+    store.dispatch("userEdit", res.data.id);
+    setCookie(res.data.id);
+    router.push({
+      name: "forum",
+    });
   } else {
     Notify({ type: "warning", message: res?.data?.data });
     return;
   }
+};
+const setCookie = (id) => {
+  let d = new Date();
+  d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000); // 将当前登录的时间加上七天，就是cookie过期的时间，也就是保存的天数
+  // 字符串拼接cookie,因为cookie存储的形式是name=value的形式
+  window.document.cookie =
+    "id" + "=" + id + ";" + "expires=" + d.toGMTString();
 };
 const onChangePassword = () => {
   router.push({
@@ -73,6 +87,7 @@ const onChangePassword = () => {
   });
 };
 const onRegister = () => {
+  console.log(111);
   router.push({
     name: "register",
   });

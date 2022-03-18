@@ -76,9 +76,9 @@ const accountNumberRules = () => checkoutRules(changePassword.accountNumber);
 const passwordRules = () => checkoutRules(changePassword.password);
 const newPasswordRules = () => checkoutRules(changePassword.newPassword);
 const onChangePassword = async () => {
-  if(changePassword.password === changePassword.newPassword){
+  if (changePassword.password === changePassword.newPassword) {
     Notify({ type: "warning", message: "新密码和旧密码不能相同" });
-    return
+    return;
   }
   const res = await changePasswordService(changePassword);
   if (res?.data?.code === 0) {
@@ -86,6 +86,9 @@ const onChangePassword = async () => {
     changePassword.password = "";
     changePassword.newPassword = "";
     Notify({ type: "success", message: "修改密码成功，可以前往登录" });
+    router.push({
+      name: "login",
+    });
   } else {
     Notify({ type: "warning", message: res?.data?.data });
     return;
