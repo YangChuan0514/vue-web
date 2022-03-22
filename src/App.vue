@@ -1,10 +1,41 @@
 <template>
   <!-- <div id="app"></div> -->
-  <van-tabbar v-model="active" @change="pageChange" v-show="tabbarShow">
-    <!-- <van-tabbar-item name="home" icon="home-o">首页</van-tabbar-item> -->
-    <van-tabbar-item name="forum" icon="home-o">首页</van-tabbar-item>
-    <van-tabbar-item name="community" icon="friends-o">社区</van-tabbar-item>
-    <van-tabbar-item name="my" icon="user-circle-o">我的</van-tabbar-item>
+  <van-tabbar
+    v-model="active"
+    @change="pageChange"
+    v-show="tabbarShow"
+    class="van-tabbar-type"
+    active-color="#f3c55e"
+  >
+    <van-tabbar-item name="homePage"
+      ><div class="iconfont icon-shouyeshouye"></div>
+      首页</van-tabbar-item
+    >
+    <van-tabbar-item name="forum">
+      <div class="iconfont icon-quanzi"></div>
+      喵星球</van-tabbar-item
+    >
+    <van-tabbar-item name="">
+      <van-popover
+        v-model:show="showPopover"
+        :actions="actions"
+        placement="top"
+        class="forum-popover"
+        @select="onSelect"
+      >
+        <template #reference>
+          <van-icon name="add" class="add-type" />
+        </template>
+      </van-popover>
+    </van-tabbar-item>
+    <van-tabbar-item name="news">
+      <div class="iconfont icon-xiaoxi"></div>
+      消息</van-tabbar-item
+    >
+    <van-tabbar-item name="my">
+      <div class="iconfont icon-wode"></div>
+      我的</van-tabbar-item
+    >
   </van-tabbar>
   <router-view></router-view>
 </template>
@@ -19,17 +50,22 @@ watch(
   () => route.path,
   () => {
     const name = route.path;
-    if (["/community", "/forum", "/my"].includes(name)) {
+    if (["/homePage", "/news", "/forum", "/my"].includes(name)) {
       active.value = String(route.name);
       tabbarShow.value = true;
     } else {
       tabbarShow.value = false;
     }
   }
-);
+),
+  watch(active, (newValue, oldValue) => {
+    if (!newValue) {
+      active.value = oldValue;
+    }
+  });
 onMounted(() => {
   const name = route.path;
-  if (["/community", "/forum", "/my"].includes(name)) {
+  if (["/homePage", "/news", "/forum", "/my"].includes(name)) {
     active.value = String(route.name);
     tabbarShow.value = true;
   } else {
@@ -37,9 +73,14 @@ onMounted(() => {
   }
 });
 const pageChange = () => {
-  if (active.value === "community") {
+  if (active.value === "homePage") {
     router.push({
-      name: "community",
+      name: "homePage",
+    });
+  }
+  if (active.value === "news") {
+    router.push({
+      name: "news",
     });
   }
   if (active.value === "forum") {
@@ -53,18 +94,49 @@ const pageChange = () => {
     });
   }
 };
+const onSelect = (val: { text: string; icon: string }) => {
+  if (val.text === "论坛") {
+    router.push({
+      name: "addForum",
+    });
+  }
+  if (val.text === "话题") {
+    router.push({
+      name: "",
+    });
+  }
+  if (val.text === "识别") {
+    router.push({
+      name: "catIdentification",
+    });
+  }
+};
+const actions = [
+  { text: "论坛", icon: "add-o" },
+  { text: "话题", icon: "chat-o" },
+  { text: "识别", icon: "aim" },
+];
+const showPopover = ref(false);
 </script>
 
 <style lang="scss">
-.forum-popover {
-  position: fixed !important;
-  left: calc(100% - 105px) !important;
-  top: calc(100% - 280px) !important;
-  width: 100px;
-  .van-popover__action {
-    width: 80px;
-    padding: 0px 0px;
-    margin: auto;
+.van-tabbar-type {
+  text-align: center;
+  .iconfont {
+    font-size: 20px;
   }
+  :deep .van-tabbar-item--active .van-tabbar-item__text {
+    .iconfont {
+      font-size: 20px;
+      color: #1989fa;
+    }
+  }
+}
+.add-type {
+  font-size: 40px !important;
+  color: #f3c55e;
+}
+.forum-popover :deep .van-popover__action-text {
+  justify-content: center;
 }
 </style>

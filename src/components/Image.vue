@@ -61,12 +61,12 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .image-forum {
-  width: 60px;
+  width: 110px;
   margin: 5px;
-  height: 60px;
+  height: 110px;
   position: relative;
   top: 10px;
-  .van-image__img {
+  :deep .van-image__img {
     border-radius: 5px;
   }
 }

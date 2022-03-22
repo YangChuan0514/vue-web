@@ -18,7 +18,7 @@ import { reactive, ref } from "vue";
 import { addCommentService } from "../../services/forum/index";
 import UploaderImg from "../../components/uploader-img.vue";
 import { uploadImg } from "../utils";
-import { Notify } from 'vant';
+import { Notify, Toast } from "vant";
 const route = useRoute();
 const router = useRouter();
 const data = reactive({
@@ -30,15 +30,14 @@ const data = reactive({
 });
 const fileList = ref([]);
 const onCancel = () => {
-  router.push({
-    name: "forum",
-  });
+  window.history.back(-1);
+  Toast.success("评论成功");
 };
 const ImgList = ref([]);
 const onComment = async () => {
-  if(!ImgList.value.length && !data.commentContent){
-    Notify({ type: 'warning', message: '评论不能为空！' });
-    return
+  if (!ImgList.value.length && !data.commentContent) {
+    Notify({ type: "warning", message: "评论不能为空！" });
+    return;
   }
   const promiseImgs: any = [];
   ImgList.value.forEach((item) => {

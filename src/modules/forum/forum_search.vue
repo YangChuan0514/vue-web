@@ -2,7 +2,6 @@
   <div>
     <van-nav-bar
       title="搜索内容"
-      left-text="返回"
       left-arrow
       @click-left="onClickLeft"
     />
@@ -33,3 +32,8 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="scss" scoped>
+:deep .van-nav-bar .van-icon {
+  color: #666;
+}
+</style>

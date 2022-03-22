@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar title="消息" left-arrow @click-left="onClickLeft" />
+    <div class="title">消息</div>
     <div class="warns-type">
       <div class="icon-text" @click="likeSelect">
         <van-icon name="like-o" class="icon-type" :badge="dzWarnNum" />
@@ -15,6 +15,7 @@
         <p>评论</p>
       </div>
     </div>
+    <div class="title-list">消息列表</div>
     <div class="message">
       <template v-for="(item, index) in List" :key="index">
         <div class="message-once">
@@ -30,23 +31,25 @@
                 <span>
                   {{ item.userMessage && item.userMessage.nickName }}
                 </span>
-                <div>关注了你</div>
-                <span>{{ time(item.newTime) }}</span>
+                <div class="content-type">关注了你</div>
               </span>
-              <van-button
-                v-if="!item.gz"
-                type="danger"
-                class="icon-type-gc"
-                @click="warnCollet(item.userattId, item.userId)"
-                >回关</van-button
-              >
-              <van-button
-                v-else
-                type="default"
-                class="icon-type-gc"
-                @click="warnDelCollet(item.userattId, item.userId)"
-                >互相关注</van-button
-              >
+              <span class="icon-right">
+                <van-button
+                  v-if="!item.gz"
+                  type="danger"
+                  class="icon-type-gc"
+                  @click="warnCollet(item.userattId, item.userId)"
+                  >回关</van-button
+                >
+                <van-button
+                  v-else
+                  type="default"
+                  class="icon-type-gc"
+                  @click="warnDelCollet(item.userattId, item.userId)"
+                  >互相关注</van-button
+                >
+                <span class="time-type">{{ time(item.newTime) }}</span>
+              </span>
             </div>
           </template>
           <template v-else-if="item.dianzanId">
@@ -61,14 +64,16 @@
                 <span>
                   {{ item.userMessage && item.userMessage.nickName }}
                 </span>
-                <div>赞了你的作品</div>
-                <span>{{ time(item.newTime) }}</span>
+                <div class="content-type">赞了你的作品</div>
               </span>
-              <van-icon
-                name="like-o"
-                class="icon-type-like"
-                @click="onForum(item.dzForumId)"
-              />
+              <span class="icon-right">
+                <van-icon
+                  name="like-o"
+                  class="icon-type-like"
+                  @click="onForum(item.dzForumId)"
+                />
+                <span class="time-type">{{ time(item.newTime) }}</span>
+              </span>
             </div>
           </template>
           <template v-else-if="item.commentId">
@@ -83,14 +88,16 @@
                 <span>
                   {{ item.userMessage && item.userMessage.nickName }}
                 </span>
-                <div>评价了你：{{ item.commentContent }}</div>
-                <span>{{ time(item.newTime) }}</span>
+                <div class="content-type">评价了你：{{ item.commentContent }}</div>
               </span>
-              <van-icon
-                name="chat-o"
-                class="icon-type-chat"
-                @click="onForum(item.commentForumId)"
-              />
+              <span class="icon-right">
+                <van-icon
+                  name="chat-o"
+                  class="icon-type-chat"
+                  @click="onForum(item.commentForumId)"
+                />
+                <span class="time-type">{{ time(item.newTime) }}</span>
+              </span>
             </div>
           </template>
         </div>
@@ -102,6 +109,7 @@
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import dayjs from "dayjs";
+import { onTime } from "../utils";
 import {
   getUserAttentionTMessage,
   getUserDianzanNum,
@@ -143,11 +151,6 @@ const ListDate = async () => {
 onMounted(async () => {
   ListDate();
 });
-const onClickLeft = () => {
-  router.push({
-    name: "forum",
-  });
-};
 const likeSelect = async () => {
   if (Number(dzWarnNum.value) > 0) {
     await updateDianzanWarn({ userId: Number(id) });
@@ -178,9 +181,7 @@ const chatSelect = async () => {
   });
   chatWarnNum.value = List.value.filter((item) => !item.warn).length;
 };
-const time = (val: number) => {
-  return dayjs(val * 1000).format("MM-DD HH:mm:ss");
-};
+const time = onTime;
 const onForum = (val) => {
   router.push({
     name: "forumDetails",
@@ -206,6 +207,15 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 };
 </script>
 <style lang="scss" scoped>
+.title {
+  font-size: 18px;
+  color: #333;
+  margin: 20px;
+}
+.title-list {
+  margin: 20px;
+  color: #333;
+}
 .icon-type {
   font-size: 40px;
   color: red;
@@ -221,17 +231,26 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 .nick-name {
   font-size: 16px;
   margin-left: 10px;
+  .content-type{
+    color: #666;
+    font-size: 14px;
+  }
+}
+.time-type {
+  font-size: 12px;
+  color: #666;
 }
 .user-messagess {
   display: flex;
+  align-items: center;
 }
 .head-img {
   width: 40px;
   height: 40px;
-  margin-top: 10px;
 }
 .message {
   margin: 10px 30px;
+  color: #333;
 }
 .message-once {
   min-height: 80px;
@@ -240,14 +259,14 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 .icon-type-chat,
 .icon-type-like {
   display: block;
-  margin-top: 10px;
-  margin-left: auto;
   font-size: 30px;
-  color: aqua;
-}
-.icon-type-like {
   color: red;
+  text-align: right;
 }
+.icon-right {
+  margin-left: auto;
+}
+
 .icon-type-gc {
   margin-left: auto;
   margin-top: 10px;

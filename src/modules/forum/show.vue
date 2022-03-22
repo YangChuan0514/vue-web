@@ -5,7 +5,6 @@
         <van-empty description="当前没有相关论坛" />
       </div>
       <div v-else v-for="data in dataListDate.dataList" :key="data.id">
-        <div class="line"></div>
         <Forum :data="data" class="forum-type" />
       </div>
     </div>
@@ -73,7 +72,9 @@ export default defineComponent({
 .show-forum {
   .forum-type {
     padding: 10px;
+    margin: 10px 0;
   }
+  margin-bottom: 60px;
 }
 
 .line {

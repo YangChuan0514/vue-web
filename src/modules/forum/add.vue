@@ -166,5 +166,9 @@ const VideoList = ref([]);
   border: 1px solid #dcdee0;
   margin: 3px auto;
   padding: 0px;
+  :deep .van-field__control {
+    min-height: 100% !important;
+    height: 70px !important;
+  }
 }
 </style>

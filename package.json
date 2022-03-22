@@ -16,6 +16,7 @@
     "qiniu-js": "^3.4.0",
     "vant": "^3.4.5",
     "vue": "^3.2.25",
+    "vue-iconfont-online": "^1.0.2",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2"
   },

@@ -1,44 +1,44 @@
 <template>
   <div>
-    <div @click="onDetails(data)">
-      <div class="title">
-        {{ data.title }}
+    <div class="text">
+      <div class="user-header" @click="userDetails">
+        <span class="user-id">
+          <template v-if="data.userMessage && data.userMessage.headImg">
+            <img :src="data.userMessage.headImg" class="head-img" />
+          </template>
+          <template v-else>
+            <img
+              src="http://yangchuan.club/pageapi_1646276722923.png"
+              class="head-img"
+            />
+          </template>
+          <span class="nick-name">{{
+            data.userMessage ? data.userMessage.nickName : "新用户"
+          }}</span>
+        </span>
+        <span class="time">{{ time(data.newTime) }}</span>
       </div>
-      <div class="content">
-        <div class="text">
-          <div class="user-id" @click="userDetails">
-            <template v-if="data.userMessage && data.userMessage.headImg">
-              <img :src="data.userMessage.headImg" class="head-img" />
-            </template>
-            <template v-else>
-              <img
-                src="http://yangchuan.club/pageapi_1646276722923.png"
-                class="head-img"
-              />
-            </template>
-            <span class="nick-name">{{
-              data.userMessage ? data.userMessage.nickName : "新用户"
-            }}</span>
-          </div>
-          <div class="forum-content">
-            <span v-if="data.type" class="forum-type">#{{ data.type }}#</span>
-            <span>{{ data.content }}</span>
-          </div>
-        </div>
-        <template v-if="data.img">
-          <Images
-          :images="data.img.length > 2 ? [data.img[0], data.img[1]] : data.img"
-          class="image-black"
-        />
-        </template>
+      <template v-if="data.img">
+        <Images :images="data.img" class="image-black" />
+      </template>
+      <div @click="onDetails(data)" class="text-content">
+        <span>
+          {{ data.title }}
+        </span>
+        <span>{{ data.content }}</span>
       </div>
     </div>
     <div class="floor-type">
-      <div>
-        <span class="time">获赞：{{ data.dianzans.length }}</span>
-        <span class="time">阅读量：{{ data.count }}</span>
+      <div class="forum-type">
+        #撸猫#
+        <span v-if="data.type">#{{ data.type }}#</span>
       </div>
-      <span class="time">{{ time(data.newTime) }}</span>
+      <div>
+        <span class="time">阅读量：{{ data.count }}</span>
+        <span class="time">评论{{ data.comments.length }}</span>
+        <span class="time">收藏{{ data.collects.length }}</span>
+        <span class="time">获赞：{{ data.dianzans.length }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +47,7 @@ import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
 import Images from "./Image.vue";
+import { onTime } from "../modules/utils";
 export default defineComponent({
   props: {
     data: Object,
@@ -71,9 +72,7 @@ export default defineComponent({
       });
     };
     const id = document.cookie.split("=")[1];
-    const time = (val: number) => {
-      return dayjs(val * 1000).format("YYYY-MM-DD HH:mm:ss");
-    };
+    const time = onTime;
     return {
       data,
       userDetails,
@@ -84,35 +83,40 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-.title {
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
 .content {
   display: flex;
 }
-.nick-name {
-  position: relative;
-  top: -7px;
-  margin-left: 4px;
-  color: rgba(46, 42, 42, 0.644);
+.forum-type {
+  color: #efb229;
   font-size: 14px;
 }
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nick-name {
+  margin-left: 10px;
+  color: #333333;
+  font-size: 16px;
+}
 .image-black {
-  width: 140px;
-  text-align: center;
+  min-width: 100%;
+  white-space: nowrap;
+  height: 140px;
+  overflow: auto;
+}
+.text-content {
+  margin-top: 10px;
 }
 .text {
   flex: 1;
   font-size: 14px;
-  color: rgba(46, 42, 42, 0.644);
+  color: #3f3f3f;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 .floor-type {
@@ -121,13 +125,17 @@ export default defineComponent({
   margin-top: 5px;
 }
 .time {
-  margin-right: 5px;
+  margin-left: 10px;
   font-size: 12px;
-  color: rgba(46, 42, 42, 0.644);
+  color: #b2b2b2;
 }
 .head-img {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
+}
+.user-id {
+  display: flex;
+  align-items: center;
 }
 </style>

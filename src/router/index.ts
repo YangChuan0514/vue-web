@@ -12,8 +12,9 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: { name: "forum" },
+      redirect: { name: "homePage" },
     },
+    homePage,
     forum,
     {
       path: "/forum/add",
@@ -62,21 +63,21 @@ const router = createRouter({
       component: () => import("../modules/my/write_message.vue"),
     },
     {
-      path: "/warn",
-      name: "warn",
-      component: () => import("../modules/warn/index.vue"),
+      path: "/catIdentification",
+      name: "catIdentification",
+      component: () => import("../modules/catIdentification/index.vue"),
     },
     {
-      path:'/community',
-      name:'community',
-      component: ()=> import("../modules/community/index.vue"),
+      path:'/news',
+      name:'news',
+      component: ()=> import("../modules/warn/index.vue"),
     },
     login,
     register,
     changePassword,
     {
       path: "/:pathMatch(.*)",
-      redirect: { name: "forum" },
+      redirect: { name: "homePage" },
     },
   ],
 });

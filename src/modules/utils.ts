@@ -35,7 +35,8 @@ export async function uploadFileVideo(event: any) {
     params: {},
     mimeType: null,
   };
-  const videoUrl = "pageapi_" + new Date().valueOf() + event.name.replace(/.*\./, ".");
+  const videoUrl =
+    "pageapi_" + new Date().valueOf() + event.name.replace(/.*\./, ".");
 
   //   实例化七牛云的上传实例
   var observable = qiniu.upload(event, videoUrl, token, putExtra, config);
@@ -51,4 +52,29 @@ export async function uploadFileVideo(event: any) {
   // 上传开始
   var subscription = observable.subscribe(observer);
   return "http://r8cqgsg5u.hb-bkt.clouddn.com/" + videoUrl;
+}
+
+export function onTime(val: number) {
+  const lagTime = Date.now() - val * 1000;
+  const s = 1000;
+  const m = 60 * s;
+  const hour = 60 * m;
+  const day = 24 * hour;
+  const yue = 30 * day;
+  const year = yue * 12;
+  if (lagTime < s) {
+    return "1秒前";
+  } else if (lagTime < m) {
+    return parseInt(String(lagTime / s), 10) + "秒前";
+  } else if (lagTime < hour) {
+    return parseInt(String(lagTime / m), 10) + "分钟前";
+  } else if (lagTime < day) {
+    return parseInt(String(lagTime / hour), 10) + "小时前";
+  } else if (lagTime < yue) {
+    return parseInt(String(lagTime / day), 10) + "天前";
+  } else if (lagTime < year) {
+    return parseInt(String(lagTime / yue), 10) + "月前";
+  } else {
+    return parseInt(String(lagTime / year), 10) + "年前";
+  }
 }

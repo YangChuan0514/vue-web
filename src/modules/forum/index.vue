@@ -1,93 +1,47 @@
 <template>
   <div class="header">
-    <van-swipe :autoplay="3000" lazy-render>
-      <van-swipe-item v-for="image in images" :key="image">
-        <img :src="image" />
-      </van-swipe-item>
-    </van-swipe>
-    <van-search
-      class="search-forum"
-      v-model="forum_search"
-      placeholder="请输入搜索关键词"
-      @keypress="
-        (e) => {
-          if (e.keyCode === 13 && forum_search) {
-            onFuzzySearch(forum_search);
+    <div>
+      <van-tabs v-model:active="activeName">
+        <van-tab title="推荐" name="recommend">
+          <ShowForum class="index-xia" />
+        </van-tab>
+        <van-tab title="关注" name="attention">
+          <ShowForum class="index-xia" />
+        </van-tab>
+      </van-tabs>
+    </div>
+    <div class="search-type">
+      <van-search
+        v-show="searchShow"
+        class="search-forum"
+        v-model="forum_search"
+        placeholder="请输入搜索关键词"
+        @keypress="
+          (e) => {
+            if (e.keyCode === 13 && forum_search) {
+              onFuzzySearch(forum_search);
+            }
           }
-        }
-      "
-    />
-    <van-button class="news" round type="primary" @click="onWarn"
-      >消息</van-button
-    >
+        "
+      />
+      <i class="iconfont icon-sousuo" @click="searchShow = !searchShow"></i>
+    </div>
   </div>
-  <div class="popover-type">
-    <van-popover
-      v-model:show="showPopover"
-      :actions="actions"
-      placement="top"
-      class="forum-popover"
-      @select="onSelect"
-    >
-      <template #reference>
-        <van-button type="primary" icon="plus" class="forum-type"></van-button>
-      </template>
-    </van-popover>
-  </div>
-  <van-tabs v-model:active="activeName">
-    <van-tab title="全部" name="a">
-      <ShowForum class="index-xia" />
-    </van-tab>
-    <van-tab title="精选" name="b">
-      <ShowForum class="index-xia" />
-    </van-tab>
-    <van-tab title="校训" name="c">
-      <ShowForum class="index-xia" />
-    </van-tab>
-  </van-tabs>
 </template>
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import ShowForum from "./show.vue";
 import { fuzzySearch } from "../../services/forum";
-const showPopover = ref(false);
 const router = useRouter();
-const activeName = ref("a");
-const actions = [
-  { text: "论坛", icon: "add-o" },
-  { text: "评论", icon: "music-o" },
-  { text: "点赞", icon: "more-o" },
-];
-const onSelect = (val: { text: string; icon: string }) => {
-  console.log(val.text);
-  if (val.text === "论坛") {
-    router.push({
-      name: "addForum",
-    });
-  }
-  if (val.text === "评论") {
-    router.push({
-      name: "",
-    });
-  }
-  if (val.text === "点赞") {
-    router.push({
-      name: "",
-    });
-  }
-};
+const activeName = ref("recommend");
+const searchShow = ref(false);
 const forum_search = ref("");
 const images = reactive([
   "http://yangchuan.club/pageapi_1646290348470.png",
   "http://yangchuan.club/pageapi_1646290349036.png",
   "http://yangchuan.club/pageapi_1646290349602.png",
 ]);
-const onWarn = () => {
-  router.push({
-    name: "warn",
-  });
-};
 const onFuzzySearch = async (val: string) => {
   router.push({
     name: "forumSearch",
@@ -98,17 +52,15 @@ const onFuzzySearch = async (val: string) => {
 };
 </script>
 <style lang="scss" scoped>
+:deep .van-tabs__wrap {
+  width: 30vw;
+}
 .header {
-  height: 200px;
   width: 100%;
+  margin-bottom: 60px;
   img {
     width: 100%;
     height: 200px;
-  }
-  .search-forum {
-    position: absolute;
-    top: 10px;
-    left: 10px;
   }
   .news {
     position: absolute;
@@ -119,8 +71,7 @@ const onFuzzySearch = async (val: string) => {
   // display: flex;
   .van-search {
     background: none;
-    width: 80%;
-    height: 60px;
+    padding: 0px;
   }
   .van-button {
     margin-top: 10px;
@@ -140,5 +91,23 @@ const onFuzzySearch = async (val: string) => {
 }
 .index-xia {
   margin-bottom: 60px;
+}
+.search-type {
+  width: 60vw;
+  height: 45px;
+  margin-right: 20px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.icon-sousuo {
+  position: absolute;
+  right: 0px;
+}
+:deep .van-tabs__line {
+  background: #efb229;
 }
 </style>
