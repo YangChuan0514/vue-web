@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory, useRouter } from "vue-router";
 import type { App } from "vue";
-import homePage from "./homePage";
-import my from "./my";
-import forum from "./forum";
-import { login, register, changePassword } from "./user";
+import { homePage } from "./homePage";
+import { my } from "./my";
+import { forum } from "./forum";
+import { userOptions } from "./user";
+import { news } from "./news";
 
 const routerHistory = createWebHistory();
 
@@ -14,67 +15,11 @@ const router = createRouter({
       path: "/",
       redirect: { name: "homePage" },
     },
-    homePage,
-    forum,
-    {
-      path: "/forum/add",
-      name: "addForum",
-      component: () => import("../modules/forum/add.vue"),
-    },
-    {
-      path: "/forum/edit",
-      name: "editForum",
-      component: () => import("../modules/forum/edit.vue"),
-    },
-    {
-      path: "/forum/add/comment",
-      name: "addComment",
-      component: () => import("../modules/forum/add_comment.vue"),
-    },
-    {
-      path: "/forum/details",
-      name: "forumDetails",
-      component: () => import("../modules/forum/forum_details.vue"),
-    },
-    {
-      path: "/forum/search",
-      name: "forumSearch",
-      component: () => import("../modules/forum/forum_search.vue"),
-    },
-    {
-      path: "/forum/:pathMatch(.*)",
-      redirect: { name: "forum" },
-    },
-    homePage,
-    my,
-    {
-      path: "/user/details",
-      name: "userDetails",
-      component: () => import("../modules/my/user_details.vue"),
-    },
-    {
-      path: "/user/message",
-      name: "userMessage",
-      component: () => import("../modules/my/update_user_message.vue"),
-    },
-    {
-      path: "/user/message/edit",
-      name: "userMessageEdit",
-      component: () => import("../modules/my/write_message.vue"),
-    },
-    {
-      path: "/catIdentification",
-      name: "catIdentification",
-      component: () => import("../modules/catIdentification/index.vue"),
-    },
-    {
-      path:'/news',
-      name:'news',
-      component: ()=> import("../modules/warn/index.vue"),
-    },
-    login,
-    register,
-    changePassword,
+    ...homePage,
+    ...my,
+    ...forum,
+    ...userOptions,
+    ...news,
     {
       path: "/:pathMatch(.*)",
       redirect: { name: "homePage" },

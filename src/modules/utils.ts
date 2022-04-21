@@ -20,7 +20,7 @@ export async function uploadImg(event: any) {
     "pageapi_" + new Date().valueOf() + event.name.replace(/.*\./, ".");
   let observable = qiniu.upload(event, imgUrl, token, putExtra, config);
   observable.subscribe(observe);
-  return "http://r8cqgsg5u.hb-bkt.clouddn.com/" + imgUrl;
+  return "http://yangchuan.club/" + imgUrl;
 }
 export async function uploadFileVideo(event: any) {
   const res = await upLoadServer();
@@ -51,7 +51,7 @@ export async function uploadFileVideo(event: any) {
   };
   // 上传开始
   var subscription = observable.subscribe(observer);
-  return "http://r8cqgsg5u.hb-bkt.clouddn.com/" + videoUrl;
+  return "http://yangchuan.club/" + videoUrl;
 }
 
 export function onTime(val: number) {

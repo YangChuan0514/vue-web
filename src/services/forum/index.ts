@@ -250,3 +250,14 @@ export async function updateUserForumComment(obj: {
   });
   return data;
 }
+
+// 回复评价
+export async function addCommentReply(obj) {
+  return await axios.post("/api/addCommentReply", obj)
+   
+}
+// 删除评价
+export async function deleteCommentReply(obj) {
+  return await axios.post("/api/deleteCommentReply", obj)
+   
+}

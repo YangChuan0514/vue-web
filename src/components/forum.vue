@@ -37,15 +37,14 @@
         <span class="time">阅读量：{{ data.count }}</span>
         <span class="time">评论{{ data.comments.length }}</span>
         <span class="time">收藏{{ data.collects.length }}</span>
-        <span class="time">获赞：{{ data.dianzans.length }}</span>
+        <span class="time">获赞：{{  data.dianzans.length }}</span>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import dayjs from "dayjs";
 import Images from "./Image.vue";
 import { onTime } from "../modules/utils";
 export default defineComponent({
@@ -73,6 +72,7 @@ export default defineComponent({
     };
     const id = document.cookie.split("=")[1];
     const time = onTime;
+  
     return {
       data,
       userDetails,

@@ -95,7 +95,6 @@ const identification = async (val: string) => {
     Toast.fail("照片识别不是宠酱猫咪");
     return;
   }
-  console.log(identificationList);
   isShowLine.value = false;
 };
 const show = ref(false);

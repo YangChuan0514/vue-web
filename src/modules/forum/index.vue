@@ -1,16 +1,7 @@
 <template>
   <div class="header">
-    <div>
-      <van-tabs v-model:active="activeName">
-        <van-tab title="推荐" name="recommend">
-          <ShowForum class="index-xia" />
-        </van-tab>
-        <van-tab title="关注" name="attention">
-          <ShowForum class="index-xia" />
-        </van-tab>
-      </van-tabs>
-    </div>
     <div class="search-type">
+      <div>喵星球</div>
       <van-search
         v-show="searchShow"
         class="search-forum"
@@ -25,6 +16,16 @@
         "
       />
       <i class="iconfont icon-sousuo" @click="searchShow = !searchShow"></i>
+    </div>
+    <div>
+      <van-tabs v-model:active="activeName">
+        <van-tab title="推荐" name="recommend">
+          <ShowForum class="index-xia" />
+        </van-tab>
+        <van-tab title="关注" name="attention">
+          <ShowForum class="index-xia" />
+        </van-tab>
+      </van-tabs>
     </div>
   </div>
 </template>
@@ -93,21 +94,15 @@ const onFuzzySearch = async (val: string) => {
   margin-bottom: 60px;
 }
 .search-type {
-  width: 60vw;
-  height: 45px;
-  margin-right: 20px;
-  position: absolute;
-  top: 0px;
-  right: 0px;
+  margin: 20px 14px 10px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.icon-sousuo {
-  position: absolute;
-  right: 0px;
-}
 :deep .van-tabs__line {
   background: #efb229;
+}
+:deep .van-tabs__line {
+  width: 15px;
 }
 </style>

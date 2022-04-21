@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div class="main">
     <div class="title">消息</div>
     <div class="warns-type">
       <div class="icon-text" @click="likeSelect">
-        <van-icon name="like-o" class="icon-type" :badge="dzWarnNum" />
+        <van-icon name="like" class="icon-type" :badge="dzWarnNum" />
         <p>点赞</p>
       </div>
       <div class="icon-text" @click="starSelect">
-        <van-icon name="star-o" class="icon-type" :badge="starWarnNum" />
+        <van-icon name="star" class="icon-type star" :badge="starWarnNum" />
         <p>关注</p>
       </div>
       <div class="icon-text" @click="chatSelect">
-        <van-icon name="chat-o" class="icon-type" :badge="chatWarnNum" />
+        <van-icon name="chat" class="icon-type chat" :badge="chatWarnNum" />
         <p>评论</p>
       </div>
     </div>
@@ -30,6 +30,7 @@
               <span class="nick-name">
                 <span>
                   {{ item.userMessage && item.userMessage.nickName }}
+                  <span v-if="!item.warn" class="new-show">new</span>
                 </span>
                 <div class="content-type">关注了你</div>
               </span>
@@ -64,6 +65,7 @@
                 <span>
                   {{ item.userMessage && item.userMessage.nickName }}
                 </span>
+                <span v-if="!item.warn" class="new-show">new</span>
                 <div class="content-type">赞了你的作品</div>
               </span>
               <span class="icon-right">
@@ -87,8 +89,11 @@
               <span class="nick-name">
                 <span>
                   {{ item.userMessage && item.userMessage.nickName }}
+                  <span v-if="!item.warn" class="new-show">new</span>
                 </span>
-                <div class="content-type">评价了你：{{ item.commentContent }}</div>
+                <div class="content-type">
+                  评价了你：{{ item.commentContent }}
+                </div>
               </span>
               <span class="icon-right">
                 <van-icon
@@ -108,7 +113,6 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
-import dayjs from "dayjs";
 import { onTime } from "../utils";
 import {
   getUserAttentionTMessage,
@@ -207,6 +211,9 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 };
 </script>
 <style lang="scss" scoped>
+.main {
+  margin-bottom: 50px;
+}
 .title {
   font-size: 18px;
   color: #333;
@@ -218,7 +225,7 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 }
 .icon-type {
   font-size: 40px;
-  color: red;
+  color: rgba(255, 0, 0, 0.5);
 }
 .warns-type {
   display: flex;
@@ -231,7 +238,7 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 .nick-name {
   font-size: 16px;
   margin-left: 10px;
-  .content-type{
+  .content-type {
     color: #666;
     font-size: 14px;
   }
@@ -272,5 +279,20 @@ const warnDelCollet = async (userattId: number, userId: number) => {
   margin-top: 10px;
   margin-right: -20px;
   height: 30px;
+}
+.new-show {
+  color: #fff;
+  background: rgba(255, 0, 0, 0.8);
+  border: 1px #fff solid;
+  margin: 0px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  padding: 0px 4px;
+}
+.star {
+  color: rgba(255, 255, 0, 0.5);
+}
+.chat {
+  color: rgba(17, 17, 226, 0.5);
 }
 </style>

@@ -67,7 +67,7 @@ const onLogin = async () => {
     store.dispatch("userEdit", res.data.id);
     setCookie(res.data.id);
     router.push({
-      name: "forum",
+      name: "homePage",
     });
   } else {
     Notify({ type: "warning", message: res?.data?.data });
@@ -78,8 +78,7 @@ const setCookie = (id) => {
   let d = new Date();
   d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000); // 将当前登录的时间加上七天，就是cookie过期的时间，也就是保存的天数
   // 字符串拼接cookie,因为cookie存储的形式是name=value的形式
-  window.document.cookie =
-    "id" + "=" + id + ";" + "expires=" + d.toGMTString();
+  window.document.cookie = "id" + "=" + id + ";" + "expires=" + d.toGMTString();
 };
 const onChangePassword = () => {
   router.push({
@@ -87,7 +86,6 @@ const onChangePassword = () => {
   });
 };
 const onRegister = () => {
-  console.log(111);
   router.push({
     name: "register",
   });

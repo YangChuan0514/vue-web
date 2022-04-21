@@ -36,17 +36,17 @@
       </van-swipe-item>
     </van-swipe>
     <main>
-      <div class="cat-secret">
+      <div class="cat-secret" @click="catSecret">
         <i class="iconfont icon-shu"></i>
         <span>宠酱秘籍</span>
       </div>
-      <div class="cat-cyclopedia">
+      <div class="cat-cyclopedia" @click="catEncyclopedia">
         <i class="iconfont icon-jiankangbaike"></i>
         <span>宠酱百科</span>
       </div>
-      <div class="cat-topic">
+      <div class="cat-topic" @click="catQuestions">
         <i class="iconfont icon-huati"></i>
-        <span>宠酱话题</span>
+        <span>专家问答</span>
       </div>
       <div class="cat-identify" @click="catIdentify">
         <i class="iconfont icon-saomiao"></i>
@@ -99,6 +99,21 @@ const home_search = ref("");
 const onFuzzySearch = (val: string) => {
   console.log(val);
 };
+const catSecret = () => {
+  router.push({
+    name: "catSecret",
+  });
+};
+const catEncyclopedia = () => {
+  router.push({
+    name: "catEncyclopedia",
+  });
+};
+const catQuestions =() =>{
+  router.push({
+    name: "catQuestions",
+  });
+}
 </script>
 <style lang="scss" scoped>
 :deep .van-search {

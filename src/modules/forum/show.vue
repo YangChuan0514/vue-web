@@ -40,8 +40,6 @@ export default defineComponent({
         dataListDate.dataList = res.data;
       } else if (props.forumType === "userId") {
         const res = await getUserForumService({
-          l: 50,
-          o: 1,
           userId: Number(id),
         });
         dataListDate.dataList = res.data;
@@ -49,7 +47,6 @@ export default defineComponent({
         const res = await getDianzanForum({ userId: Number(id) });
         dataListDate.dataList = res.data;
       } else if (props.forumType === "search") {
-        console.log("111");
         const data = {
           search: props.search,
           o: 1,

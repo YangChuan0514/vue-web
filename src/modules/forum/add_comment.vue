@@ -15,14 +15,18 @@
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
 import { reactive, ref } from "vue";
-import { addCommentService } from "../../services/forum/index";
+import {
+  addCommentService,
+  addCommentReply,
+} from "../../services/forum/index";
 import UploaderImg from "../../components/uploader-img.vue";
 import { uploadImg } from "../utils";
 import { Notify, Toast } from "vant";
 const route = useRoute();
 const router = useRouter();
+const id = document.cookie.split("=")[1];
 const data = reactive({
-  userId: document.cookie.split("=")[1],
+  userId: id,
   commentForumId: Number(route.query.id),
   commentContent: "",
   commentImg: [],
@@ -47,7 +51,19 @@ const onComment = async () => {
     promiseImgs.push(img);
   });
   data.commentImg = await Promise.all(promiseImgs);
-  await addCommentService(data);
+  if (route.params.type === "commentReply") {
+    await addCommentReply({
+      userId: id,
+      cruserId: route.params.userId,
+      content: data.commentContent,
+      newTime: Date.now() / 1000,
+      image: data.commentImg.join(''),
+      commentId: route.params.commentId,
+    });
+  } else {
+    await addCommentService(data);
+  }
+
   onCancel();
 };
 const qiniuUrl = "http://upload-as0.qiniup.com";

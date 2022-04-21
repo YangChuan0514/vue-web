@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1647862637009') format('truetype');
+  src: url('iconfont.ttf?t=1650353330820') format('truetype');
 }
 
 .iconfont {
@@ -49,5 +49,17 @@
 
 .icon-anniu-jiantouxiangyou_o:before {
   content: "\eb8c";
+}
+
+.icon-yiliao:before {
+  content: "\e7f1";
+}
+
+.icon-zhinengsiwei:before {
+  content: "\e9ad";
+}
+
+.icon-chongwuxunlian:before {
+  content: "\e60e";
 }
 

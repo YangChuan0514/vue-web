@@ -74,6 +74,27 @@
       "font_class": "anniu-jiantouxiangyou_o",
       "unicode": "eb8c",
       "unicode_decimal": 60300
+    },
+    {
+      "icon_id": "98617096",
+      "name": "医疗",
+      "font_class": "yiliao",
+      "unicode": "e7f1",
+      "unicode_decimal": 59377
+    },
+    {
+      "icon_id": "98617097",
+      "name": "智能饲喂",
+      "font_class": "zhinengsiwei",
+      "unicode": "e9ad",
+      "unicode_decimal": 59821
+    },
+    {
+      "icon_id": "98617098",
+      "name": "宠物训练",
+      "font_class": "chongwuxunlian",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
     }
   ]
 }

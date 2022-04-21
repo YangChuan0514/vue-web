@@ -1,20 +1,22 @@
 <template>
   <div class="forum-details">
     <h2>{{ dataDetails.title }}</h2>
-    <van-image
-      round
-      width="30px"
-      height="30px"
-      fit="cover"
-      :src="
-        dataDetails.userMessage
-          ? dataDetails.userMessage.headImg
-          : 'http://yangchuan.club/pageapi_1646276722923.png'
-      "
-    />
-    <span class="nick-name">{{
-      dataDetails.userMessage ? dataDetails.userMessage.nickName : "新用户"
-    }}</span>
+    <div class="user-info">
+      <van-image
+        round
+        width="30px"
+        height="30px"
+        fit="cover"
+        :src="
+          dataDetails.userMessage
+            ? dataDetails.userMessage.headImg
+            : 'http://yangchuan.club/pageapi_1646276722923.png'
+        "
+      />
+      <span class="nick-name">{{
+        dataDetails.userMessage ? dataDetails.userMessage.nickName : "新用户"
+      }}</span>
+    </div>
     <div>
       <p>{{ dataDetails.type }}</p>
       <p>{{ dataDetails.content }}</p>
@@ -40,7 +42,7 @@
           ]"
         />
         <van-icon
-          :name="isTrue(dataDetails.collects) ? 'like' : 'like-o'"
+          :name="isTrue(dataDetails.dianzans) ? 'like' : 'like-o'"
           @click="dianzan(dataDetails)"
           :class="[
             'icon-type',
@@ -52,7 +54,7 @@
         }}</span>
       </div>
     </div>
-    <van-cell-group inset>
+    <van-cell-group inset class="comment-input">
       <van-field
         :id="`commentsRef${dataDetails.id}`"
         v-model="commentsValue[dataDetails.id]"
@@ -66,19 +68,46 @@
         "
       />
     </van-cell-group>
-    <div class="comments-type" v-if="dataDetails.comments">
-      <span v-for="item in dataDetails.comments" :key="item.commentId">
-        <div class="comment-item">
-          <span class="user-id-comment">
-            {{ item.userMessage ? item.userMessage.nickName : "新用户" }}</span
-          >
-          {{ item.commentContent }}
-          <template v-if="item.commentImg.length">
-            <Images :images="item.commentImg" :imagesType="'comment'" />
+    <template v-if="dataDetails.comments">
+      <template v-for="item in dataDetails.comments" :key="item.commentId">
+        <div class="user-id-comment">
+          <span class="name">
+            <template v-if="item.userMessage">
+              <van-image
+                round
+                width="20px"
+                height="20px"
+                fit="cover"
+                :src="item.userMessage.headImg"
+              />
+            </template>
+            {{ item.userMessage ? item.userMessage.nickName : "新用户" }}:
+          </span>
+          <span class="comment-content">{{ item.commentContent }}</span>
+          <span class="reply" @click="replyClick(item)">回复</span>
+        </div>
+        <template v-if="item.commentImg.length">
+          <Images :images="item.commentImg" :imagesType="'comment'" />
+        </template>
+        <div v-if="item.commentReplies.length">
+          <template v-for="reply in item.commentReplies" :key="reply.id">
+            <div class="reply-type">
+              <span class="nick-name">{{ reply.userIdMessage.nickName }}</span>
+              <span>回复</span>
+              <span class="nick-name">{{
+                reply.cruserIdMessage.nickName
+              }}</span>
+              <span class="reply" @click="replyClick(reply)"
+                ><van-icon name="chat-o"
+              /></span>
+            </div>
+            <div class="comment-reply">
+              {{ reply.content }}
+            </div>
           </template>
         </div>
-      </span>
-    </div>
+      </template>
+    </template>
   </div>
 </template>
 <script lang="ts" setup>
@@ -102,7 +131,6 @@ const dataDetails = ref({});
 onMounted(async () => {
   const res = await getForumIdService(Number(route.query.id));
   dataDetails.value = res.data[0];
-  console.log(dataDetails.value);
 });
 const isTrue = (val: any) => {
   let bool = false;
@@ -182,6 +210,16 @@ const onClickInput = async (data: any) => {
   dataDetails.value = res.data[0];
   commentsValue[data.id] = "";
 };
+const replyClick = (val) => {
+  router.push({
+    name: "addComment",
+    params: {
+      ...val,
+      type: "commentReply",
+    },
+  });
+  console.log(val);
+};
 </script>
 <style lang="scss" scoped>
 .image-forum {
@@ -197,9 +235,32 @@ span {
   margin: 3px;
 }
 .user-id-comment {
-  color: red;
-  margin: 3px;
-  font-size: 12px;
+  width: 94vw;
+  margin: 8px 0px;
+  display: flex;
+  position: relative;
+  align-items: start;
+  .name {
+    margin: 0px 3px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    .van-image {
+      margin-right: 4px;
+    }
+  }
+  .comment-content {
+    margin: 0px 10px;
+    font-size: 14px;
+    word-wrap: break-word;
+    width: 60%;
+  }
+  .reply {
+    position: absolute;
+    right: 0px;
+    font-size: 14px;
+    color: #0ca3fa;
+  }
 }
 .forum-content {
   font-size: 14px;
@@ -242,6 +303,32 @@ span {
   background: rgb(233, 233, 233);
 }
 .forum-details {
-  margin-bottom: 60px;
+  margin: 10px 15px;
+}
+.comment-input {
+  margin: 0px;
+  width: 100%;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+}
+.reply-type {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  align-items: center;
+  margin-left: 40px;
+  position: relative;
+  .reply {
+    position: absolute;
+    right: 0px;
+    font-size: 14px;
+    color: #0ca3fa;
+  }
+}
+.comment-reply {
+  margin-left: 45px;
+  word-wrap: break-word;
 }
 </style>
