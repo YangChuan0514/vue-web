@@ -10,7 +10,7 @@
           { required: true, message: '请填写用户名' },
           {
             validator: accountNumberRules,
-            message: '请填写正确内容',
+            message: '用户名长度为6-18位，请正确填写',
           },
         ]"
       />
@@ -24,7 +24,7 @@
           { required: true, message: '请填写密码' },
           {
             validator: passwordRules,
-            message: '请填写正确内容',
+            message: '密码长度为6-18位，请正确填写',
           },
         ]"
       />
@@ -38,7 +38,7 @@
           { required: true, message: '请重新填写密码' },
           {
             validator: repetitionPasswordRules,
-            message: '请填写正确内容',
+            message: '密码长度为6-18位，请正确填写',
           },
         ]"
       />

@@ -42,3 +42,44 @@ export async function updateMessageService(obj: any) {
   });
   return data;
 }
+// 关注
+export async function addUserAttention(obj: any) {
+  let data = await axios.post("/api/addUserAttention", obj);
+  return data;
+}
+// 取关
+export async function deleteUserAttentionData(obj: any) {
+  let data = await axios.post("/api/deleteUserAttention", obj);
+  return data;
+}
+
+// 添加留言
+export async function addLeaveMessage(obj: any) {
+  let data = await axios.post("/api/addLeaveMessage", obj);
+  return data;
+}
+//修改 留言
+export async function updateLeaveMessage(obj: any) {
+  let data = await axios.post("/api/updateLeaveMessage", obj);
+  return data;
+}
+//查找留言
+export async function leaveMessageFindAll(obj: any) {
+  let data = await axios.post("/api/leaveMessageFindAll", obj);
+  return data;
+}
+//查找通知
+export async function notificationFindAll(obj: any) {
+  let data = await axios.post("/api/notificationFindAll", obj);
+  return data;
+}
+//修改通知
+export async function updateNotificationMessage(obj: any) {
+  let data = await axios.post("/api/updateNotificationMessage", obj);
+  return data;
+}
+// 添加通知
+export async function addNotificationData(obj: any) {
+  let data = await axios.post("/api/addNotificationData", obj);
+  return data;
+}

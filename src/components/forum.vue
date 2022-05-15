@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text">
-      <div class="user-header" @click="userDetails">
+      <div class="user-header" @click="userDetails(data.userId)">
         <span class="user-id">
           <template v-if="data.userMessage && data.userMessage.headImg">
             <img :src="data.userMessage.headImg" class="head-img" />
@@ -28,16 +28,33 @@
         <span>{{ data.content }}</span>
       </div>
     </div>
-    <div class="floor-type">
+    <div class="floor-type" v-if="form != 2">
       <div class="forum-type">
-        #撸猫#
-        <span v-if="data.type">#{{ data.type }}#</span>
+        <template v-if="data.type">
+          <template v-for="(item, index) in data.type.split(',')" :key="index">
+            <span v-if="index < 2"> #{{ typeShow(item) }}#</span>
+          </template>
+        </template>
       </div>
       <div>
         <span class="time">阅读量：{{ data.count }}</span>
-        <span class="time">评论{{ data.comments.length }}</span>
-        <span class="time">收藏{{ data.collects.length }}</span>
-        <span class="time">获赞：{{  data.dianzans.length }}</span>
+        <span class="time"
+          >评论{{ data.comments && data.comments.length }}</span
+        >
+        <span class="time"
+          >收藏{{ data.collects && data.collects.length }}</span
+        >
+        <span class="time"
+          >获赞：{{ data.dianzans && data.dianzans.length }}</span
+        >
+      </div>
+    </div>
+    <div class="floor-type floor-type-tow" v-else>
+      <div>
+        <span class="time">阅读量：{{ data.count }}</span>
+        <span class="time"
+          >评论{{ data.comments && data.comments.length }}</span
+        >
       </div>
     </div>
   </div>
@@ -50,6 +67,7 @@ import { onTime } from "../modules/utils";
 export default defineComponent({
   props: {
     data: Object,
+    form: String,
   },
   components: {
     Images,
@@ -62,22 +80,41 @@ export default defineComponent({
         name: "forumDetails",
         query: {
           id: data.id,
+          form: props.form,
         },
       });
     };
     const userDetails = (data: any) => {
       router.push({
         name: "userDetails",
+        query: { id: data },
       });
     };
     const id = document.cookie.split("=")[1];
     const time = onTime;
-  
+    const typeShow = (val: string) => {
+      switch (val) {
+        case "1":
+          return "日常";
+        case "2":
+          return "撸猫";
+        case "3":
+          return "生活";
+        case "4":
+          return "训练";
+        case "5":
+          return "医疗";
+        case "6":
+          return "饲养";
+      }
+    };
     return {
       data,
       userDetails,
       onDetails,
       time,
+      typeShow,
+      form: props.form,
     };
   },
 });
@@ -137,5 +174,9 @@ export default defineComponent({
 .user-id {
   display: flex;
   align-items: center;
+}
+.floor-type-tow {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

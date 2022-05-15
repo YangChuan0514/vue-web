@@ -8,7 +8,10 @@
         placeholder="请填写用户名"
         :rules="[
           { required: true, message: '请填写用户名' },
-          { validator: accountNumberRules, message: '请填写正确内容' },
+          {
+            validator: accountNumberRules,
+            message: '用户名长度为6-18位，请正确填写',
+          },
         ]"
       />
       <van-field
@@ -19,7 +22,7 @@
         placeholder="请填写密码"
         :rules="[
           { required: true, message: '请填写密码' },
-          { validator: passwordRules, message: '请填写正确内容' },
+          { validator: passwordRules, message: '密码长度为6-18位，请正确填写' },
         ]"
       />
     </van-cell-group>
@@ -65,7 +68,7 @@ const onLogin = async () => {
     login.password = "";
     Notify({ type: "success", message: "登录成功" });
     store.dispatch("userEdit", res.data.id);
-    setCookie(res.data.id);
+    setCookie(res.data.id, res.data.type);
     router.push({
       name: "homePage",
     });
@@ -74,11 +77,12 @@ const onLogin = async () => {
     return;
   }
 };
-const setCookie = (id) => {
+const setCookie = (id: number, type: string) => {
   let d = new Date();
   d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000); // 将当前登录的时间加上七天，就是cookie过期的时间，也就是保存的天数
   // 字符串拼接cookie,因为cookie存储的形式是name=value的形式
   window.document.cookie = "id" + "=" + id + ";" + "expires=" + d.toGMTString();
+  window.localStorage.setItem("type", type);
 };
 const onChangePassword = () => {
   router.push({
@@ -86,6 +90,7 @@ const onChangePassword = () => {
   });
 };
 const onRegister = () => {
+  console.log(111);
   router.push({
     name: "register",
   });

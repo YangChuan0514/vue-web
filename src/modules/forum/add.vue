@@ -5,8 +5,17 @@
         <van-field
           v-model="addForum.title"
           name="title"
-          placeholder="请填写帖子标题..."
-          :rules="[{ required: true, message: '请填写帖子标题' }]"
+          :placeholder="`请填写${
+            route.query.form == 1 ? '帖子' : '问题'
+          }标题...`"
+          :rules="[
+            {
+              required: true,
+              message: `请填写${
+                route.query.form == 1 ? '帖子' : '问题'
+              }标题...`,
+            },
+          ]"
         />
         <van-field
           v-model="addForum.content"
@@ -14,8 +23,17 @@
           type="textarea"
           autosize
           rows="1"
-          placeholder="请填写帖子内容..."
-          :rules="[{ required: true, message: '请填写帖子内容' }]"
+          :placeholder="`请填写${
+            route.query.form == 1 ? '帖子' : '问题'
+          }内容...`"
+          :rules="[
+            {
+              required: true,
+              message: `请填写${
+                route.query.form == 1 ? '帖子' : '问题'
+              }内容...`,
+            },
+          ]"
           class="textarea-type"
         />
         <van-field label="上传照片:">
@@ -23,15 +41,23 @@
             <UploaderImg @ImgListChange="ImgListChange" />
           </template>
         </van-field>
-        <van-field label="选择话题:">
+        <van-field
+          label="选择话题:"
+          class="type-class"
+          v-if="route.query.form != 2"
+        >
           <template #input>
-            <van-checkbox-group v-model="addForum.type" direction="horizontal">
-              <van-checkbox name="1" shape="square">复选框 1</van-checkbox>
-              <van-checkbox name="2" shape="square">复选框 2</van-checkbox>
+            <van-checkbox-group v-model="typeClass" direction="horizontal">
+              <van-checkbox name="1" shape="square">日常</van-checkbox>
+              <van-checkbox name="2" shape="square">撸猫</van-checkbox>
+              <van-checkbox name="3" shape="square">生活</van-checkbox>
+              <van-checkbox name="4" shape="square">训练</van-checkbox>
+              <van-checkbox name="5" shape="square">医疗</van-checkbox>
+              <van-checkbox name="6" shape="square">饲养</van-checkbox>
             </van-checkbox-group>
           </template>
         </van-field>
-        <van-field class="video-auto">
+        <van-field class="video-auto" v-if="route.query.form != 2">
           <template #input>
             <van-uploader
               :action="qiniuUrl"
@@ -59,13 +85,16 @@
 import { ref, reactive } from "vue";
 import { AddForum } from "../../type/forum/index";
 import { addForumService } from "../../services/forum/index";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { uploadImg, uploadFileVideo } from "../utils";
 import Videos from "../../components/Video.vue";
 import UploaderImg from "../../components/uploader-img.vue";
+import { Notify } from "vant";
 // import UpLoad from "./upLoad.vue";
 const router = useRouter();
+const route = useRoute();
 const userId = document.cookie.split("=")[1];
+const typeClass = ref([]);
 const addForum: AddForum = reactive({
   userId,
   title: "",
@@ -75,6 +104,7 @@ const addForum: AddForum = reactive({
   newTime: new Date().getTime() / 1000,
   count: 0,
   video: [],
+  form: route.query.form,
 });
 const ImgList = ref([]);
 const onFailed = async () => {
@@ -95,6 +125,7 @@ const onFailed = async () => {
     promiseVideos.push(video);
   });
   addForum.video = await Promise.all(promiseVideos);
+  addForum.type = typeClass.value.join(",");
   const res = await addForumService(addForum);
   router.push({
     name: "forum",
@@ -169,6 +200,13 @@ const VideoList = ref([]);
   :deep .van-field__control {
     min-height: 100% !important;
     height: 70px !important;
+  }
+}
+.type-class {
+  display: flex;
+  .van-checkbox {
+    width: 80px;
+    margin: 10px 10px;
   }
 }
 </style>

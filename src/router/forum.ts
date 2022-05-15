@@ -30,6 +30,11 @@ export const forum = [
     component: () => import("../modules/forum/forum_search.vue"),
   },
   {
+    path: "/forum/complaint",
+    name: "complaint",
+    component: () => import("../modules/forum/complaint.vue"),
+  },
+  {
     path: "/forum/:pathMatch(.*)",
     redirect: { name: "forum" },
   },

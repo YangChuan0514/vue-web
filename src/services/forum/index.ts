@@ -9,7 +9,11 @@ export async function addForumService(obj: AddForum) {
   return data;
 }
 //获取所有论坛
-export async function getForumService(obj: { l: number; o: number }) {
+export async function getForumService(obj: {
+  l: number;
+  o: number;
+  form: number;
+}) {
   let data = {};
   await axios.post("/api/getForumAll", obj).then((res) => {
     data = res;
@@ -32,7 +36,9 @@ export async function getUserForumService(obj: any) {
   });
   return data;
 }
-
+export async function deleteForum(obj: { id: number }) {
+  return axios.post("/api/deleteForum", obj)
+}
 export async function getDianzanForum(obj: any) {
   let data = {};
   await axios.post("/api/getDianzanForum", obj).then((res) => {
@@ -150,7 +156,7 @@ export async function getCommentService(obj: { userId: number }) {
   return data;
 }
 //关注我的
-export async function getUserAttentionTMessage(obj: { userId: number }) {
+export async function getUserAttentionTMessage(obj: { userattId: number }) {
   let data = {};
   await axios.post("/api/getUserAttentionTMessage", obj).then((res) => {
     data = res;
@@ -252,12 +258,14 @@ export async function updateUserForumComment(obj: {
 }
 
 // 回复评价
-export async function addCommentReply(obj) {
-  return await axios.post("/api/addCommentReply", obj)
-   
+export async function addCommentReply(obj: any) {
+  return await axios.post("/api/addCommentReply", obj);
 }
 // 删除评价
-export async function deleteCommentReply(obj) {
-  return await axios.post("/api/deleteCommentReply", obj)
-   
+export async function deleteCommentReply(obj: any) {
+  return await axios.post("/api/deleteCommentReply", obj);
+}
+// 删除评价
+export async function addComplaintData(obj: any) {
+  return await axios.post("/api/addComplaintData", obj);
 }

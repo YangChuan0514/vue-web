@@ -8,14 +8,14 @@ export async function catIdentification(img: String) {
       // 可不填写
       advanced_general: {}, // 可不填写
       animal: {
-        top_num: "1",
-        baike_num: "1",
+        top_num: "3",
+        baike_num: "3",
       },
     },
   };
   await axios
     .post(
-      "/cat/solution/direct/imagerecognition/combination?access_token=24.e7cb808e83ca6e2ca35bbef91ee3cd95.2592000.1649926910.282335-25769457",
+      "/cat/solution/direct/imagerecognition/combination?access_token=24.378d325afc9ce5ebe54488d40dcd3871.2592000.1654914597.282335-25769457",
       data
     )
     .then((res) => {

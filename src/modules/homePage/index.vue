@@ -46,7 +46,7 @@
       </div>
       <div class="cat-topic" @click="catQuestions">
         <i class="iconfont icon-huati"></i>
-        <span>专家问答</span>
+        <span>问答专区</span>
       </div>
       <div class="cat-identify" @click="catIdentify">
         <i class="iconfont icon-saomiao"></i>
@@ -55,15 +55,15 @@
     </main>
     <div class="tip-type">
       <div class="title">
-        <span style="color: #333333">宠酱</span>
-        <span style="color: #efb229">百科</span>
+        <span style="color: #333333">每日</span>
+        <span style="color: #efb229">热点</span>
       </div>
       <div>热量高的食物对宠酱好不好？</div>
       <i class="iconfont icon-anniu-jiantouxiangyou_o"></i>
     </div>
     <footer class="home-footer">
       <div class="daily-topic">
-        <span> 每日话题 </span>
+        <span> 热点问题 </span>
         <span class="topic-look">查看更多 <van-icon name="arrow" /></span>
       </div>
       <van-swipe

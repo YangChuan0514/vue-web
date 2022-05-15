@@ -5,7 +5,7 @@
         <van-empty description="当前没有相关论坛" />
       </div>
       <div v-else v-for="data in dataListDate.dataList" :key="data.id">
-        <Forum :data="data" class="forum-type" />
+        <Forum :data="data" class="forum-type" :form="form" />
       </div>
     </div>
   </div>
@@ -25,6 +25,7 @@ export default defineComponent({
   props: {
     forumType: String,
     search: String,
+    form: String,
   },
   components: {
     Forum,
@@ -55,12 +56,13 @@ export default defineComponent({
         const res = await fuzzySearch(data);
         dataListDate.dataList = res.data;
       } else {
-        const res = await getForumService({ l: 50, o: 1 });
+        const res = await getForumService({ l: 9999, o: 1, form: props.form });
         dataListDate.dataList = res.data;
       }
     });
     return {
       dataListDate,
+      form: props.form
     };
   },
 });

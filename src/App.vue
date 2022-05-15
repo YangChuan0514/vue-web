@@ -98,11 +98,17 @@ const onSelect = (val: { text: string; icon: string }) => {
   if (val.text === "论坛") {
     router.push({
       name: "addForum",
+      query: {
+        form: 1,
+      },
     });
   }
-  if (val.text === "话题") {
+  if (val.text === "问题") {
     router.push({
-      name: "",
+      name: "addForum",
+      query: {
+        form: 2,
+      },
     });
   }
   if (val.text === "识别") {
@@ -113,7 +119,7 @@ const onSelect = (val: { text: string; icon: string }) => {
 };
 const actions = [
   { text: "论坛", icon: "add-o" },
-  { text: "话题", icon: "chat-o" },
+  { text: "问题", icon: "chat-o" },
   { text: "识别", icon: "aim" },
 ];
 const showPopover = ref(false);

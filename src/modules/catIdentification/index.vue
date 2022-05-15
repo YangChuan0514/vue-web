@@ -12,8 +12,8 @@
         <van-button class="cat-btn">上传照片</van-button>
       </van-uploader>
     </div>
-    <template v-for="item in identificationList" :key="item.score">
-      <div class="cat-content" @click="particulars">
+    <template v-for="(item, index) in identificationList" :key="item.score">
+      <div class="cat-content" @click="particulars(index)">
         <template v-if="image">
           <img width="100" height="100" :src="image" class="image-content" />
         </template>
@@ -38,10 +38,10 @@
         </div>
         <div>
           <p class="cat-ident-name">
-            {{ identificationList[0].name }}
+            {{ identificationList[doalogNum].name }}
           </p>
           <p class="cat-precision">
-            详情:{{ identificationList[0].baike_info.description }}
+            详情:{{ identificationList[doalogNum].baike_info.description }}
           </p>
         </div>
       </div>
@@ -98,7 +98,9 @@ const identification = async (val: string) => {
   isShowLine.value = false;
 };
 const show = ref(false);
-const particulars = () => {
+const doalogNum = ref(0);
+const particulars = (val: number) => {
+  doalogNum.value = val;
   show.value = true;
 };
 </script>

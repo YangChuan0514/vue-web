@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="header-type">
-      <div>专家问答</div>
+      <div>问答专区</div>
       <span class="search-type">
         <van-search
           v-show="searchShow"
@@ -22,23 +22,21 @@
     </header>
     <main>
       <van-tabs v-model:active="activeName" class="tabs-type">
-        <van-tab title="全部" name="recommend"> </van-tab>
-        <van-tab title="精华" name="attention"> </van-tab>
+        <van-tab title="全部" name="recommend">
+          <ShowForum :form="'2'" />
+        </van-tab>
+        <van-tab title="关注" name="attention">
+          <ShowForum :form="'2'" />
+        </van-tab>
+        <van-tab title="精华" name="essence"> </van-tab>
       </van-tabs>
-      <template v-for="item in dataList" :key="item.id">
-        <div class="item-type" @click="deilClick(item.id)">
-          <div>{{ item.name }}</div>
-          <div class="answer-num">
-            <van-icon name="chat-o" class="chat-o" />{{ item.answerNum }}
-          </div>
-        </div>
-      </template>
     </main>
   </div>
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import ShowForum from "../forum/show.vue";
 const searchShow = ref(false);
 const home_search = ref("recommend");
 const onFuzzySearch = (val: string) => {
@@ -46,36 +44,6 @@ const onFuzzySearch = (val: string) => {
 };
 const router = useRouter();
 const activeName = ref("");
-const dataList = ref([
-  {
-    id: "1",
-    name: "苏格兰折耳猫",
-    answerNum: "1",
-  },
-  {
-    id: "2",
-    name: "苏格兰折耳猫",
-    answerNum: "1",
-  },
-  {
-    id: "3",
-    name: "苏格兰折耳猫",
-    answerNum: "1",
-  },
-  {
-    id: "4",
-    name: "苏格兰折耳猫",
-    answerNum: "1",
-  },
-]);
-const deilClick = (val: string) => {
-  router.push({
-    name: "",
-    query: {
-      id: val,
-    },
-  });
-};
 </script>
 <style lang="scss" scoped>
 .header-type {
@@ -98,31 +66,17 @@ const deilClick = (val: string) => {
 }
 main {
   margin: 5px 12px;
-}
-.item-type {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  border: 1px rgb(209, 205, 205) solid;
-  font-size: 14px;
-  .answer-num {
-    width: 50px;
-    .chat-o {
-      margin-right: 4px;
-    }
-  }
-}
-:deep .van-tabs__wrap {
-  width: 30vw;
+  display: block;
 }
 :deep .van-tabs__line {
   background: #efb229;
 }
-:deep .van-tabs__line {
-  width: 15px;
-}
 .tabs-type {
   margin-bottom: 20px;
+  width: 100%;
+  :deep .van-tabs__wrap {
+    display: block;
+    width: 100%;
+  }
 }
 </style>

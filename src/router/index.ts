@@ -5,6 +5,7 @@ import { my } from "./my";
 import { forum } from "./forum";
 import { userOptions } from "./user";
 import { news } from "./news";
+import { manager } from "./manager";
 
 const routerHistory = createWebHistory();
 
@@ -20,6 +21,7 @@ const router = createRouter({
     ...forum,
     ...userOptions,
     ...news,
+    ...manager,
     {
       path: "/:pathMatch(.*)",
       redirect: { name: "homePage" },
@@ -40,6 +42,8 @@ export function resetRoute(): void {
 router.beforeEach((to, from, next) => {
   const id = document.cookie?.split("=")[1];
   if (to.path === "/login") next();
+  if (to.path === "/register") next();
+  if (to.path === "/changePassword") next();
   if (id) {
     next();
   } else {

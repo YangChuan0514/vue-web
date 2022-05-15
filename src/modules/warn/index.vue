@@ -14,6 +14,18 @@
         <van-icon name="chat" class="icon-type chat" :badge="chatWarnNum" />
         <p>评论</p>
       </div>
+      <div class="icon-text" @click="envelopSelect">
+        <van-icon
+          name="envelop-o"
+          class="icon-type envelop"
+          :badge="envelopNum"
+        />
+        <p>留言</p>
+      </div>
+      <div class="icon-text" @click="bellSelect">
+        <van-icon name="bell" class="icon-type bell" :badge="notificationNum" />
+        <p>通告</p>
+      </div>
     </div>
     <div class="title-list">消息列表</div>
     <div class="message">
@@ -26,13 +38,17 @@
                 fit="cover"
                 round
                 :src="item.userMessage ? item.userMessage.headImg : ''"
+                @click="userDetails(item.userId)"
               />
               <span class="nick-name">
                 <span>
                   {{ item.userMessage && item.userMessage.nickName }}
                   <span v-if="!item.warn" class="new-show">new</span>
                 </span>
-                <div class="content-type">关注了你</div>
+                <div class="content-type">
+                  关注了你
+                  <span class="time-type">{{ time(item.newTime) }}</span>
+                </div>
               </span>
               <span class="icon-right">
                 <van-button
@@ -40,7 +56,7 @@
                   type="danger"
                   class="icon-type-gc"
                   @click="warnCollet(item.userattId, item.userId)"
-                  >回关</van-button
+                  >已关注</van-button
                 >
                 <van-button
                   v-else
@@ -49,7 +65,6 @@
                   @click="warnDelCollet(item.userattId, item.userId)"
                   >互相关注</van-button
                 >
-                <span class="time-type">{{ time(item.newTime) }}</span>
               </span>
             </div>
           </template>
@@ -60,6 +75,7 @@
                 class="head-img"
                 fit="cover"
                 :src="item.userMessage ? item.userMessage.headImg : ''"
+                @click="userDetails(item.userId)"
               />
               <span class="nick-name">
                 <span>
@@ -85,6 +101,7 @@
                 fit="cover"
                 round
                 :src="item.userMessage ? item.userMessage.headImg : ''"
+                @click="userDetails(item.userId)"
               />
               <span class="nick-name">
                 <span>
@@ -100,6 +117,50 @@
                   name="chat-o"
                   class="icon-type-chat"
                   @click="onForum(item.commentForumId)"
+                />
+                <span class="time-type">{{ time(item.newTime) }}</span>
+              </span>
+            </div>
+          </template>
+          <template v-else-if="item.userLMId">
+            <div class="user-messagess">
+              <van-image
+                class="head-img"
+                fit="cover"
+                round
+                :src="item.userMessage ? item.userMessage.headImg : ''"
+                @click="userDetails(item.userId)"
+              />
+              <span class="nick-name">
+                <span>
+                  {{ item.userMessage && item.userMessage.nickName }}
+                  <span v-if="!item.warn" class="new-show">new</span>
+                </span>
+                <div class="content-type">给你留言：{{ item.content }}</div>
+              </span>
+              <span class="icon-right">
+                <van-icon
+                  name="envelop-o"
+                  class="icon-type-chat"
+                  @click="onLeaveMessage(item)"
+                />
+                <span class="time-type">{{ time(item.newTime) }}</span>
+              </span>
+            </div>
+          </template>
+          <template v-else-if="item.id">
+            <div class="user-messagess">
+              <span class="nick-name">
+                <div @click="notificationClick(item)">
+                  通告：<span v-if="!item.warn" class="new-show">new</span>
+                </div>
+                <div class="content-type">{{ item.content }}</div>
+              </span>
+              <span class="icon-right">
+                <van-icon
+                  name="bell"
+                  class="icon-type-chat"
+                  @click="onLeaveMessage(item)"
                 />
                 <span class="time-type">{{ time(item.newTime) }}</span>
               </span>
@@ -124,30 +185,46 @@ import {
   updateDianzanWarn,
   updateUserForumComment,
 } from "../../services/forum/index";
+import {
+  leaveMessageFindAll,
+  notificationFindAll,
+} from "../../services/user/index";
 const router = useRouter();
 const id = document.cookie.split("=")[1];
 let List: any[] = ref([]);
 const dzWarnNum = ref("");
 const starWarnNum = ref("");
 const chatWarnNum = ref("");
+const envelopNum = ref("");
+const notificationNum = ref("");
 const ListDate = async () => {
   const dz = new Promise((res) => {
     res(getUserDianzanNum({ userId: Number(id) }));
   });
   const At = new Promise((res) => {
-    res(getUserAttentionTMessage({ userId: Number(id) }));
+    res(getUserAttentionTMessage({ userattId: Number(id) }));
   });
   const Uc = new Promise((res) => {
     res(getUserForumComment({ userId: Number(id), o: 1, l: 50 }));
   });
-  let res: any[] = await Promise.all([dz, At, Uc]);
+  const Ly = new Promise((res) => {
+    res(leaveMessageFindAll({ userLMId: Number(id) }));
+  });
+  const Tz = new Promise((res) => {
+    res(notificationFindAll({ userId: Number(id) }));
+  });
+  let res: any[] = await Promise.all([dz, At, Uc, Ly, Tz]);
   const dzDate = res[0]?.data;
   const atDate = res[1]?.data;
   const ucDate = res[2]?.data?.rows;
+  const LyDate = res[3]?.data;
+  const TzData = res[4]?.data;
   dzWarnNum.value = dzDate.filter((item) => !item.warn).length;
   starWarnNum.value = atDate.filter((item) => !item.warn).length;
   chatWarnNum.value = ucDate.filter((item) => !item.warn).length;
-  res = [].concat(dzDate, atDate, ucDate);
+  envelopNum.value = LyDate.filter((item) => !item.warn).length;
+  notificationNum.value = TzData.filter((item) => !item.warn).length;
+  res = [].concat(dzDate, atDate, ucDate, LyDate, TzData);
   List.value = res.sort((a, b) => {
     return b.newTime - a.newTime;
   });
@@ -169,7 +246,7 @@ const starSelect = async () => {
   if (Number(starWarnNum.value) > 0) {
     await updateUserAttWarn({ userId: Number(id) });
   }
-  const res = await getUserAttentionTMessage({ userId: Number(id) });
+  const res = await getUserAttentionTMessage({ userattId: Number(id) });
   List.value = res?.data?.sort((a, b) => {
     return b.newTime - a.newTime;
   });
@@ -184,6 +261,13 @@ const chatSelect = async () => {
     return b.newTime - a.newTime;
   });
   chatWarnNum.value = List.value.filter((item) => !item.warn).length;
+};
+const envelopSelect = async () => {
+  const res = await leaveMessageFindAll({ userLMId: Number(id) });
+  List.value = res?.data?.sort((a, b) => {
+    return b.newTime - a.newTime;
+  });
+  envelopNum.value = List.value.filter((item) => !item.warn).length;
 };
 const time = onTime;
 const onForum = (val) => {
@@ -208,6 +292,35 @@ const warnDelCollet = async (userattId: number, userId: number) => {
     userattId: Number(userId),
   });
   ListDate();
+};
+const bellSelect = async () => {
+  const res = await notificationFindAll({ userId: Number(id) });
+  List.value = res?.data?.sort((a, b) => {
+    return b.newTime - a.newTime;
+  });
+  notificationNum.value = List.value.filter((item) => !item.warn).length;
+};
+const onLeaveMessage = (val: any) => {
+  router.push({
+    name: "leaveMessage",
+    params: {
+      data: JSON.stringify(val),
+    },
+  });
+};
+const notificationClick = (val: any) => {
+  router.push({
+    name: "notification",
+    params: {
+      data: JSON.stringify(val),
+    },
+  });
+};
+const userDetails = (data: any) => {
+  router.push({
+    name: "userDetails",
+    query: { id: data },
+  });
 };
 </script>
 <style lang="scss" scoped>
@@ -238,9 +351,15 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 .nick-name {
   font-size: 16px;
   margin-left: 10px;
+  max-width: 60vw;
+
   .content-type {
     color: #666;
     font-size: 14px;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 .time-type {
@@ -254,6 +373,7 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 .head-img {
   width: 40px;
   height: 40px;
+  align-self: start;
 }
 .message {
   margin: 10px 30px;
@@ -262,6 +382,7 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 .message-once {
   min-height: 80px;
   width: 100%;
+  margin: 10px 0px;
 }
 .icon-type-chat,
 .icon-type-like {
@@ -294,5 +415,11 @@ const warnDelCollet = async (userattId: number, userId: number) => {
 }
 .chat {
   color: rgba(17, 17, 226, 0.5);
+}
+.envelop {
+  color: rgba(52, 226, 17, 0.5);
+}
+.bell {
+  color: rgb(241, 20, 20);
 }
 </style>

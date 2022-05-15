@@ -20,10 +20,10 @@
     <div>
       <van-tabs v-model:active="activeName">
         <van-tab title="推荐" name="recommend">
-          <ShowForum class="index-xia" />
+          <ShowForum class="index-xia" :form="'1'" />
         </van-tab>
         <van-tab title="关注" name="attention">
-          <ShowForum class="index-xia" />
+          <ShowForum class="index-xia" :form="'1'" />
         </van-tab>
       </van-tabs>
     </div>

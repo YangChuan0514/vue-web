@@ -1,25 +1,51 @@
 <template>
   <div class="forum-details">
+    <van-nav-bar
+      :title="form != 2 ? '帖子详情' : '问题详情'"
+      left-arrow
+      @click-left="onClickLeft"
+    />
     <h2>{{ dataDetails.title }}</h2>
     <div class="user-info">
-      <van-image
-        round
-        width="30px"
-        height="30px"
-        fit="cover"
-        :src="
-          dataDetails.userMessage
-            ? dataDetails.userMessage.headImg
-            : 'http://yangchuan.club/pageapi_1646276722923.png'
-        "
-      />
-      <span class="nick-name">{{
-        dataDetails.userMessage ? dataDetails.userMessage.nickName : "新用户"
-      }}</span>
+      <div class="img-name">
+        <van-image
+          round
+          width="30px"
+          height="30px"
+          fit="cover"
+          :src="
+            dataDetails.userMessage
+              ? dataDetails.userMessage.headImg
+              : 'http://yangchuan.club/pageapi_1646276722923.png'
+          "
+        />
+        <span class="nick-name">{{
+          dataDetails.userMessage ? dataDetails.userMessage.nickName : "新用户"
+        }}</span>
+      </div>
+      <div>
+        <span class="tou-su" v-if="showTS" @click="touClick">举报</span>
+        <span
+          class="tou-su"
+          v-if="showTS && (dataDetails.userId == id || type == 2)"
+          @click="deleteClick"
+          >删除</span
+        >
+        <van-icon name="ellipsis" @click="showTS = !showTS" />
+      </div>
     </div>
     <div>
-      <p>{{ dataDetails.type }}</p>
       <p>{{ dataDetails.content }}</p>
+      <p class="forum-type" v-if="form != 2">
+        <template v-if="dataDetails.type">
+          <template
+            v-for="(item, index) in dataDetails.type.split(',')"
+            :key="index"
+          >
+            <span> #{{ typeShow(item) }}#</span>
+          </template>
+        </template>
+      </p>
       <template v-if="dataDetails.img && dataDetails.img.length">
         <Images :images="dataDetails.img" :imagesType="'forum'" />
       </template>
@@ -34,6 +60,7 @@
           class="icon-type"
         />
         <van-icon
+          v-if="form != 2"
           :name="isTrue(dataDetails.collects) ? 'star' : 'star-o'"
           @click="collect(dataDetails)"
           :class="[
@@ -42,6 +69,7 @@
           ]"
         />
         <van-icon
+          v-if="form != 2"
           :name="isTrue(dataDetails.dianzans) ? 'like' : 'like-o'"
           @click="dianzan(dataDetails)"
           :class="[
@@ -49,7 +77,7 @@
             isTrue(dataDetails.dianzans) ? 'icon-color-like' : '',
           ]"
         />
-        <span class="text-num">{{
+        <span class="text-num" v-if="form != 2">{{
           dataDetails.dianzans ? dataDetails.dianzans.length : 0
         }}</span>
       </div>
@@ -115,7 +143,7 @@ import Images from "../../components/Image.vue";
 import Videos from "../../components/Video.vue";
 import { useRoute, useRouter } from "vue-router";
 import {
-  getForumService,
+  deleteForum,
   deletDZService,
   addDZService,
   addCollectService,
@@ -123,15 +151,21 @@ import {
   addCommentService,
   getForumIdService,
 } from "../../services/forum/index";
+import { addNotificationData } from "../../services/user/index";
 import { ref, reactive, onMounted } from "vue";
+import { Notify, Toast } from "vant";
 const route = useRoute();
 const router = useRouter();
 const forumId = route.query.id;
 const dataDetails = ref({});
+const userId = ref("");
+const type = localStorage.getItem("type");
 onMounted(async () => {
   const res = await getForumIdService(Number(route.query.id));
   dataDetails.value = res.data[0];
 });
+const showTS = ref(false);
+const form = route.query.form;
 const isTrue = (val: any) => {
   let bool = false;
   if (Array.isArray(val)) {
@@ -220,6 +254,50 @@ const replyClick = (val) => {
   });
   console.log(val);
 };
+const touClick = () => {
+  router.push({
+    name: "complaint",
+    query: {
+      id: dataDetails.value.id,
+      userId: dataDetails.value.userId,
+    },
+  });
+};
+const typeShow = (val: string) => {
+  switch (val) {
+    case "1":
+      return "日常";
+    case "2":
+      return "撸猫";
+    case "3":
+      return "生活";
+    case "4":
+      return "训练";
+    case "5":
+      return "医疗";
+    case "6":
+      return "饲养";
+  }
+};
+const deleteClick = async () => {
+  if (dataDetails.value.userId == id) {
+    await deleteForum({ id: dataDetails.value.id });
+    Toast.success("删除成功！");
+    window.history.back(-1);
+  } else {
+    await addNotificationData({
+      userId: dataDetails.value.userId,
+      content: "您的帖子违规被删除",
+      newTime: Date.now() / 1000,
+    });
+    await deleteForum({ id: dataDetails.value.id });
+    Toast.success("删除成功！");
+    window.history.back(-1);
+  }
+};
+const onClickLeft = () => {
+  window.history.back(-1);
+};
 </script>
 <style lang="scss" scoped>
 .image-forum {
@@ -265,9 +343,6 @@ span {
 .forum-content {
   font-size: 14px;
 }
-.forum-type {
-  padding: 10px;
-}
 .icon-type {
   font-size: 18px;
   margin: 0px 5px;
@@ -312,6 +387,11 @@ span {
 .user-info {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  .img-name {
+    display: flex;
+    align-items: center;
+  }
 }
 .reply-type {
   display: flex;
@@ -330,5 +410,16 @@ span {
 .comment-reply {
   margin-left: 45px;
   word-wrap: break-word;
+}
+.tou-su {
+  margin-right: 10px;
+  color: red;
+}
+.forum-type {
+  color: #efb229;
+  font-size: 14px;
+}
+:deep .van-icon-arrow-left:before{
+  color: #333;
 }
 </style>

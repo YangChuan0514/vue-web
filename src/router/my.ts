@@ -29,4 +29,9 @@ export const my = [
     name: "userCatMessage",
     component: () => import("../modules/my/cat_message.vue"),
   },
+  {
+    path: "/user/leaveMessage",
+    name: "addLeaveMessage",
+    component: () => import("../modules/my/add_LM.vue"),
+  },
 ];
